@@ -54,16 +54,17 @@ picker.
 ## Manual test checklist
 
 1. **At the cursor.** Type `hello` in a block, run `Comic Strip: xkcd` from the
-   palette. The block reads `hello [xkcd: …](…) #comic ![](…)` and shows the image.
-   `Cmd/Ctrl+Z` undoes it.
+   palette. The block reads `hello [xkcd: …](…) #comic` and its first child holds
+   the image. Unsaved text typed just before running the command survives.
 2. **Uploaded.** The image URL points at Roam's file storage, not `imgs.xkcd.com`.
 3. **Bullet menu.** Right-click a bullet → Plugins → `Comic Strip: xkcd`. A new
-   block appears directly below it, at the same level.
+   title block appears directly below it, at the same level, with the image nested
+   under it.
 4. **Daily note.** With no block in edit mode, run the palette command. The comic
    goes to the bottom of today's daily note and a notice says so, even when that note
    did not exist yet.
-5. **Tag.** Set the tag to `my comics` and the block gets `#[[my comics]]`. With an
-   empty tag the block gets no tag at all.
+5. **Tag.** Set the tag to `my comics` and the title gets `#[[my comics]]`. With an
+   empty tag the title gets no tag at all.
 6. **Failure.** Change `WORKER_URL` to a bad host. A notice explains the failure and
    nothing is written.
 7. **Unload.** Disable the extension. The palette and bullet-menu commands are gone.

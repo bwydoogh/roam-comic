@@ -62,7 +62,9 @@ function escapeLinkLabel(text) {
   return String(text).replace(/\[/g, "(").replace(/\]/g, ")");
 }
 
-function buildBlockString(comic, imageUrl, tag) {
+// The title and tag go in one block and the image in a child block beneath it;
+// on one line the image pushes the title into a narrow column.
+function buildTitleString(comic, tag) {
   const parts = [`[${escapeLinkLabel(`${comic.source}: ${comic.title}`)}](${comic.pageUrl})`];
   const formattedTag = formatTag(tag);
 
@@ -70,8 +72,11 @@ function buildBlockString(comic, imageUrl, tag) {
     parts.push(formattedTag);
   }
 
-  parts.push(`![](${imageUrl})`);
   return parts.join(" ");
+}
+
+function buildImageString(imageUrl) {
+  return `![](${imageUrl})`;
 }
 
 // Text to insert at the caret so the comic does not glue onto a preceding word.
@@ -166,19 +171,21 @@ function pull(pattern, uid) {
 }
 
 async function createBlock(parentUid, order, string) {
-  await roamAPI().data.block.create({ location: { "parent-uid": parentUid, order }, block: { string } });
+  const uid = roamAPI().util.generateUID();
+  await roamAPI().data.block.create({ location: { "parent-uid": parentUid, order }, block: { uid, string } });
+  return uid;
 }
 
+// Returns the new block's uid, or null when the block's position is unknown.
 async function insertAfter(uid, string) {
   const block = pull("[:block/order {:block/_children [:block/uid]}]", uid);
   const parentUid = block?.[":block/_children"]?.[0]?.[":block/uid"];
 
   if (!parentUid || typeof block?.[":block/order"] !== "number") {
-    return false;
+    return null;
   }
 
-  await createBlock(parentUid, block[":block/order"] + 1, string);
-  return true;
+  return createBlock(parentUid, block[":block/order"] + 1, string);
 }
 
 async function appendToDailyNote(string) {
@@ -190,7 +197,7 @@ async function appendToDailyNote(string) {
     await api.data.page.create({ page: { title: api.util.dateToPageTitle(today), uid } });
   }
 
-  await createBlock(uid, "last", string);
+  return createBlock(uid, "last", string);
 }
 
 // --- DOM ---------------------------------------------------------------------
@@ -291,22 +298,28 @@ async function insertComic(source, blockUid = null) {
     return fail(`Could not fetch a ${source.label} comic: ${error.message}.`, error);
   }
 
-  const string = buildBlockString(comic, await storeImage(comic), readTag());
+  const title = buildTitleString(comic, readTag());
+  const image = buildImageString(await storeImage(comic));
 
   try {
     // Re-resolved after the fetch: the user may have left the block meanwhile.
     const textarea = uid ? findEditingTextarea(uid) : null;
 
-    if (textarea && !blockUid && insertAtCaret(textarea, string)) {
+    // The edited block keeps its own text; the image becomes its first child.
+    // Creating a child does not touch the block's unsaved string.
+    if (textarea && !blockUid && insertAtCaret(textarea, title)) {
+      await createBlock(uid, 0, image);
       return true;
     }
 
-    if (uid && await insertAfter(uid, string)) {
-      return true;
+    let parentUid = uid ? await insertAfter(uid, title) : null;
+
+    if (!parentUid) {
+      parentUid = await appendToDailyNote(title);
+      showNotice(`Added ${comic.source} to today's daily note.`);
     }
 
-    await appendToDailyNote(string);
-    showNotice(`Added ${comic.source} to today's daily note.`);
+    await createBlock(parentUid, 0, image);
     return true;
   } catch (error) {
     return fail("Could not write the comic into the graph.", error);

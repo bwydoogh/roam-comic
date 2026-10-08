@@ -13,7 +13,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const exposed = ["formatTag", "buildBlockString", "textForCaret", "extractUploadUrl", "isComic", "fileNameFor", "SOURCES"];
+const exposed = ["formatTag", "buildTitleString", "buildImageString", "textForCaret", "extractUploadUrl", "isComic", "fileNameFor", "SOURCES"];
 
 const dir = mkdtempSync(join(tmpdir(), "roam-comic-test-"));
 const harness = join(dir, "harness.mjs");
@@ -46,15 +46,10 @@ try {
     assert.equal(ext.formatTag(""), "");
   });
 
-  await test("buildBlockString", () => {
-    assert.equal(
-      ext.buildBlockString(comic, "https://firebase/x.jpg", "comic"),
-      "[xkcd: Barrel - Part 1](https://xkcd.com/1/) #comic ![](https://firebase/x.jpg)",
-    );
-    assert.equal(
-      ext.buildBlockString({ ...comic, title: "a [b]" }, "u", ""),
-      "[xkcd: a (b)](https://xkcd.com/1/) ![](u)",
-    );
+  await test("buildTitleString and buildImageString", () => {
+    assert.equal(ext.buildTitleString(comic, "comic"), "[xkcd: Barrel - Part 1](https://xkcd.com/1/) #comic");
+    assert.equal(ext.buildTitleString({ ...comic, title: "a [b]" }, ""), "[xkcd: a (b)](https://xkcd.com/1/)");
+    assert.equal(ext.buildImageString("https://firebase/x.jpg"), "![](https://firebase/x.jpg)");
   });
 
   await test("textForCaret", () => {

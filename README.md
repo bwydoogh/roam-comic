@@ -2,24 +2,26 @@
 
 Drop a comic into your graph in one command.
 
-Open the command palette and run **Comic Strip: xkcd**. You get one block like this:
+Open the command palette and run **Comic Strip: xkcd**. You get a title with the
+image nested beneath it:
 
 ```text
-[xkcd: Bag Check](https://xkcd.com/651/) #comic ![](https://firebasestorage.../bag-check.png)
+- [xkcd: Bag Check](https://xkcd.com/651/) #comic
+    - ![](https://firebasestorage.../bag-check.png)
 ```
 
 Every run brings up a different comic.
 
 ## Where it lands
 
-- **Editing a block:** at the cursor.
+- **Editing a block:** the title at the cursor, the image as the block's first child.
 - **Bullet menu:** right-click a bullet, open **Plugins** and choose
   **Comic Strip: xkcd**. The comic goes into a new block right below that one.
 - **Otherwise:** at the bottom of today's daily note.
 
 ## Settings
 
-- **Tag**: added to every comic block. Defaults to `comic`. Leave it empty if you
+- **Tag**: added to every comic's title. Defaults to `comic`. Leave it empty if you
   don't want a tag.
 
 ## Notes

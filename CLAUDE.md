@@ -16,8 +16,8 @@ There are two parts.
 
 - **`extension.js`** is a single file with no bundler and no dependencies, because Roam
   Depot publishes only `extension.js` and `extension.css`. It is edited directly. It
-  calls the Worker, uploads the image with `roamAlphaAPI.file.upload` and writes one
-  block.
+  calls the Worker, uploads the image with `roamAlphaAPI.file.upload` and writes a
+  title block with the image as its first child.
 - **`worker/src/index.js`** is a Cloudflare Worker. Each source is a route
   (`GET /xkcd`) that returns `{ source, title, pageUrl, imageUrl }`. All site-specific
   knowledge lives here: APIs, scraping, the random pick. `GET /image?u=` proxies images
@@ -31,6 +31,8 @@ number picker, no "latest" option and no alt text. The user chose that scope.
 - **Edit mode goes through `execCommand("insertText")`.** The editing textarea holds
   unsaved text. Never assign `textarea.value` and never `block.update` that block. The
   context-menu path creates a *new* sibling block via the API instead, which is safe.
+  The image child is always created via the API, also under the edited block —
+  creating a child does not touch the parent's string.
 - **Re-resolve the target after the fetch.** The fetch and upload take a moment, and the
   user may have left the block in the meantime. `insertComic` looks up the textarea
   again afterwards and falls back to inserting after the block, then to the daily note.
