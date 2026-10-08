@@ -1,0 +1,21 @@
+{
+  "name": "roam-comic",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Roam Research extension that inserts a comic strip into your graph.",
+  "type": "module",
+  "scripts": {
+    "dev": "node dev-server.mjs",
+    "test": "node tools/test-logic.mjs",
+    "check": "node --check extension.js && node --check dev-server.mjs && node --check worker/src/index.js && node tools/test-logic.mjs",
+    "worker:dev": "cd worker && npx wrangler dev",
+    "worker:deploy": "cd worker && npx wrangler deploy"
+  },
+  "keywords": [
+    "roam-research",
+    "roam-depot",
+    "comics",
+    "xkcd"
+  ],
+  "license": "MIT"
+}
