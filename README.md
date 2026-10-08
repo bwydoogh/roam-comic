@@ -27,7 +27,7 @@ Every run brings up a different comic.
 - The image is uploaded into your graph's own file storage, so it stays even if the
   source site removes it. If the upload fails, the block links to the original
   image instead.
-- **Network:** this extension calls `roam-comic.bwydoogh.workers.dev`, a small
+- **Network:** this extension calls `roam-comic.benny-wydooghe.workers.dev`, a small
   Cloudflare Worker run by the author. It fetches the comic's title and image
   address from the source site (xkcd's API can't be called from a browser) and
   sends nothing about you or your graph. Images are downloaded from the source site

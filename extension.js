@@ -6,7 +6,7 @@ const NOTICE_DURATION_MS = 2500;
 const BLOCK_UID_PATTERN = /([\w-]{9})$/;
 
 // The Worker in worker/ knows each site; the extension only knows the route.
-const WORKER_URL = "https://roam-comic.bwydoogh.workers.dev";
+const WORKER_URL = "https://roam-comic.benny-wydooghe.workers.dev";
 
 // Adding a source: a handler in worker/src/index.js plus an entry here.
 const SOURCES = [{ id: "xkcd", label: "xkcd" }];

@@ -31,7 +31,7 @@ note in `README.md`.
 Smoke test after a deploy:
 
 ```sh
-curl -s https://roam-comic.bwydoogh.workers.dev/xkcd
+curl -s https://roam-comic.benny-wydooghe.workers.dev/xkcd
 ```
 
 ## Adding a source
