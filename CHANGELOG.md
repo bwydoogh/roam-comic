@@ -13,3 +13,5 @@ All notable changes to this project are documented here.
   original.
 - Setting: the tag added to each comic's title (default `comic`, empty for none).
 - Cloudflare Worker (`worker/`) that serves one normalized comic per source.
+- Sources `Comic Strip: Sigmund` (Dutch), `Comic Strip: Existential Comics` and
+  `Comic Strip: SMBC`. Their images go through the Worker's image proxy.

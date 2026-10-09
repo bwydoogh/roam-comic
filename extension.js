@@ -9,7 +9,12 @@ const BLOCK_UID_PATTERN = /([\w-]{9})$/;
 const WORKER_URL = "https://roam-comic.benny-wydooghe.workers.dev";
 
 // Adding a source: a handler in worker/src/index.js plus an entry here.
-const SOURCES = [{ id: "xkcd", label: "xkcd" }];
+const SOURCES = [
+  { id: "xkcd", label: "xkcd" },
+  { id: "sigmund", label: "Sigmund" },
+  { id: "existential", label: "Existential Comics" },
+  { id: "smbc", label: "SMBC" },
+];
 
 const SETTINGS = { tag: "tag" };
 const DEFAULT_TAG = "comic";
