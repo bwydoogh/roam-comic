@@ -31,7 +31,9 @@ note in `README.md`.
 Smoke test after a deploy:
 
 ```sh
-curl -s https://roam-comic.benny-wydooghe.workers.dev/xkcd
+for s in xkcd sigmund existential smbc; do
+  curl -s https://roam-comic.benny-wydooghe.workers.dev/$s; echo
+done
 ```
 
 ## Adding a source
